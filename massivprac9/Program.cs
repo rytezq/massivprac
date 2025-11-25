@@ -10,182 +10,191 @@ namespace massivprac9
     {
         static void Main(string[] args)
         {
-            string[] students = {"Иванов Алексей,5,4,5,3","Петрова Мария,4,5,4,5","Сидоров Дмитрий,3,3,4,2","Козлова Анна,5,5,5,5","Николаев Павел,2,3,2,3","Орлова Екатерина,4,4,3,4","Федоров Сергей,5,4,5,4","Семенова Ольга,3,4,3,4"};
-            string[] subjects = {"Математика","Физика","Информатика","История"};
-            Console.WriteLine("База данных студентов:");
-            Console.WriteLine("Имя|Матем|Физика|Информ|История");
+            Console.WriteLine($"Табель оценок 9Б (Рус.яз, Ин.яз, Мат, Инф, Физ)");
+            string[] stud =
+            {
+                "Семенов-5-5-5-5-5",
+                "Волочкова-4-5-4-5-4",
+                "Сидоров-5-4-5-4-5",
+                "Романова-4-4-4-4-3",
+                "Николаев-3-4-3-5-4",
+                "Бустеров-5-5-3-4-3",
+                "Волкова-4-3-5-3-4",
+                "Крид-3-5-4-4-2",
+                "Белова-4-3-3-3-3",
+                "Жуков-3-3-4-5-3",
+            };
             Console.WriteLine();
-            foreach (string student in students)
+            foreach (string tabel in stud)
             {
-                string[] parts = student.Split(',');
-                Console.WriteLine($"{parts[0]} | {parts[1]} | {parts[2]} | {parts[3]} | {parts[4]}");
+                var part = tabel.Split('-');
+                Console.Write($"{part[0]}: ");
+                for (int i = 1; i < part.Length; i++)
+                {
+                    Console.Write($"{part[i]}, ");
+                }
+                Console.WriteLine();
             }
-            Console.Write("Введите минимальный средний балл для поиска: ");
-            double minAverage = double.Parse(Console.ReadLine());
-
-            Console.WriteLine($"Студенты со средним баллом выше {minAverage}:");
-            Console.WriteLine("Имя|Средний балл");
             Console.WriteLine();
-
-            int foundStudents = 0;
-            foreach (string student in students)
+            Console.WriteLine($"Введите средний балл");
+            double a = Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine();
+            Console.WriteLine($"Ученики со средним баллом выше {a}:");
+            foreach (string tab in stud)
             {
-                string[] parts = student.Split(',');
-                string name = parts[0];
-
+                var part = tab.Split('-');
+                string name = part[0];
                 double sum = 0;
-                for (int i = 1; i < parts.Length; i++)
+                for (int i = 1; i < part.Length; i++)
                 {
-                    sum += int.Parse(parts[i]);
+                    sum += Convert.ToDouble(part[i]);
                 }
-                double average = sum / (parts.Length - 1);
-
-                if (average > minAverage)
+                double sred = sum / (part.Length - 1);
+                if (sred > a)
                 {
-                    Console.WriteLine($"{name} | {average:F1}");
-                    foundStudents++;
+                    Console.WriteLine($"{name}: {sred:f1}");
                 }
             }
-
-            if (foundStudents == 0)
+            Console.WriteLine();
+            Console.WriteLine($"Успеваимость по предметам:");
+            string[] sub = { "Рус.яз", "Ин.яз", "Матем", "Информатика", "Физика" };
+            double[] best = new double[sub.Length];
+            for (int i = 0; i < sub.Length; i++)
             {
-                Console.WriteLine("Студентов не найдено");
-            }
-            Console.WriteLine(" Анализ успеваемости по предметам ");
-
-            double[] subjectAverages = new double[subjects.Length];
-
-            for (int subjectIndex = 0; subjectIndex < subjects.Length; subjectIndex++)
-            {
-                double subjectSum = 0;
-
-                foreach (string student in students)
+                double summ = 0;
+                foreach (string tab in stud)
                 {
-                    string[] parts = student.Split(',');
-                    subjectSum += int.Parse(parts[subjectIndex + 1]);
+                    var part = tab.Split('-');
+                    summ += Convert.ToDouble(part[i + 1]);
                 }
-
-                subjectAverages[subjectIndex] = subjectSum / students.Length;
-                Console.WriteLine($"{subjects[subjectIndex]}: {subjectAverages[subjectIndex]:F1}");
+                best[i] = summ / stud.Length;
+                Console.WriteLine($"{sub[i]}: {best[i]}");
             }
-            double maxSubjectAverage = 0;
-            string bestSubject = "";
-
-            for (int i = 0; i < subjectAverages.Length; i++)
+            Console.WriteLine();
+            Console.WriteLine($"Предмет с наивысшей успеваимостью:");
+            double max = 0;
+            string bub = "";
+            for (int i = 0; i < best.Length; i++)
             {
-                if (subjectAverages[i] > maxSubjectAverage)
+                if (best[i] > max)
                 {
-                    maxSubjectAverage = subjectAverages[i];
-                    bestSubject = subjects[i];
+                    max = best[i];
+                    bub = sub[i];
                 }
             }
-
-            Console.WriteLine($"Предмет с наивысшим средним баллом: {bestSubject} ({maxSubjectAverage:F1})");
-
-            Console.WriteLine("Рейтинг студентов по успеваемости");
-            string[] rating = new string[students.Length];
-
-            for (int i = 0; i < students.Length; i++)
+            Console.WriteLine($"{bub}: {max}");
+            Console.WriteLine();
+            string[] ret = new string[stud.Length];
+            for (int i = 0; i < ret.Length; i++)
             {
-                string[] parts = students[i].Split(',');
-                string name = parts[0];
-
+                var part = stud[i].Split('-');
+                string name = part[0];
                 double sum = 0;
-                for (int j = 1; j < parts.Length; j++)
+                for (int j = 1; j < part.Length; j++)
                 {
-                    sum += int.Parse(parts[j]);
+                    sum += Convert.ToDouble(part[j]);
                 }
-                double average = sum / (parts.Length - 1);
-
-                rating[i] = $"{name},{average:F2}";
+                double sred = sum / (part.Length - 1);
+                ret[i] = $"{name}-{sred}";
             }
-
-            for (int i = 0; i < rating.Length - 1; i++)
+            var rit = ret.OrderByDescending(r => Convert.ToDouble(r.Split('-')[1]));
+            int kol = 1;
+            foreach (string r in rit)
             {
-                for (int j = i + 1; j < rating.Length; j++)
+                Console.WriteLine($"{kol}.  {r.Split('-')[0]} -- {r.Split('-')[1]}");
+                kol++;
+            }
+            Console.WriteLine();
+            Console.WriteLine("---- Отличники ----");
+            foreach (string tab in stud)
+            {
+                var part = tab.Split('-');
+                var name = part[0];
+                int five = 0;
+                for (int j = 1; j < part.Length; j++)
                 {
-                    string[] parts1 = rating[i].Split(',');
-                    string[] parts2 = rating[j].Split(',');
-
-                    double avg1 = double.Parse(parts1[1]);
-                    double avg2 = double.Parse(parts2[1]);
-
-                    if (avg1 < avg2)
+                    if (part[j] == "5")
                     {
-                        string temp = rating[i];
-                        rating[i] = rating[j];
-                        rating[j] = temp;
+                        five++;
                     }
                 }
+                if (five == part.Length - 1)
+                {
+                    Console.WriteLine($"  --  {name}  --  ");
+                }
             }
-
-            Console.WriteLine("Место|Имя|Средний балл");
-            Console.WriteLine(" ");
-            for (int i = 0; i < rating.Length; i++)
+            Console.WriteLine();
+            Console.WriteLine("---- Нормисы ----");
+            foreach (string tab in stud)
             {
-                string[] parts = rating[i].Split(',');
-                Console.WriteLine($"{i + 1}\t{parts[0]}\t{parts[1]}");
+                var part = tab.Split('-');
+                var name = part[0];
+                int four = 0;
+                int three = 0;
+                int two = 0;
+                for (int i = 1; i < part.Length; i++)
+                {
+                    if (part[i] == "4")
+                    {
+                        four++;
+                    }
+                    if (part[i] == "3")
+                    {
+                        three++;
+                    }
+                    if (part[i] == "2")
+                    {
+                        two++;
+                    }
+                }
+                if (four > 0 && three == 0 && two == 0)
+                {
+                    Console.WriteLine($"  --  {name}  --  ");
+                }
             }
-
-  
-            Console.WriteLine(" Категории студентов ");
-
-            string imbastudents = "Отличники (средний балл ≥ 4.5): ";
-            string lohstudents = "Двоечники (средний балл < 3.0): ";
-            int imbaCount = 0;
-            int lohCount = 0;
-
-            foreach (string student in students)
+            Console.WriteLine();
+            Console.WriteLine("---- Троечники ----");
+            foreach (string tab in stud)
             {
-                string[] parts = student.Split(',');
-                string name = parts[0];
-
-                double sum = 0;
-                for (int i = 1; i < parts.Length; i++)
+                var part = tab.Split('-');
+                string name = part[0];
+                int three = 0;
+                int two = 0;
+                for (int i = 1; i < part.Length; i++)
                 {
-                    sum += int.Parse(parts[i]);
+                    if (part[i] == "3")
+                    {
+                        three++;
+                    }
+                    if (part[i] == "2")
+                    {
+                        two++;
+                    }
                 }
-                double average = sum / (parts.Length - 1);
-
-                if (average >= 4.5)
+                if (three > 0 && two == 0)
                 {
-                    imbastudents += name + ", ";
-                    imbaCount++;
-                }
-                else if (average < 3.0)
-                {
-                    lohstudents += name + ", ";
-                    lohCount++;
+                    Console.WriteLine($"  --  {name}  --  ");
                 }
             }
-
-            if (imbaCount > 0)
-                Console.WriteLine(imbastudents.TrimEnd(',', ' '));
-            else
-                Console.WriteLine("Отличников нет");
-
-            if (lohCount > 0)
-                Console.WriteLine(lohstudents.TrimEnd(',', ' '));
-            else
-                Console.WriteLine("Двоечников нет");
-
-            Console.WriteLine("Общая статистика ");
-
-            double totalSum = 0;
-            foreach (string student in students)
+            Console.WriteLine();
+            Console.WriteLine($"---- Двоечники ----");
+            foreach (string tab in stud)
             {
-                string[] parts = student.Split(',');
-                for (int i = 1; i < parts.Length; i++)
+                var part = tab.Split('-');
+                var name = part[0];
+                int two = 0;
+                for (int j = 1; j < part.Length; j++)
                 {
-                    totalSum += int.Parse(parts[i]);
+                    if (part[j] == "2")
+                    {
+                        two++;
+                    }
+                }
+                if (two > 0)
+                {
+                    Console.WriteLine($"---  {name}  ---");
                 }
             }
-
-            double overallAverage = totalSum / (students.Length * subjects.Length);
-            Console.WriteLine($"Общий средний балл группы: {overallAverage:F2}");
-            Console.WriteLine($"Всего студентов: {students.Length}");
-            Console.WriteLine($"Отличников: {imbaCount}");
-            Console.WriteLine($"Двоечников: {lohCount}");
         }
     }
 }

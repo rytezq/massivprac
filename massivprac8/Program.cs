@@ -10,116 +10,93 @@ namespace massivprac8
     {
         static void Main(string[] args)
         {
-            int[] testresults = { 85, 92, 78, 45, 67, 88, 95, 72, 60, 81, 53, 90, 75, 68, 82 };
-
-            Console.WriteLine("Результаты тестирования:");
-            for (int i = 0; i < testresults.Length; i++)
+            Console.WriteLine($"Введите количество результатов");
+            int a = Convert.ToInt32(Console.ReadLine());
+            int[] test = new int[a];
+            Random random = new Random();
+            for (int i = 0; i < test.Length; i++)
             {
-                Console.Write(testresults[i] + " ");
+                test[i] = random.Next(0, 101);
+                Console.Write(test[i] + " ");
             }
-            int sum = 0;
-            foreach (int result in testresults)
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine($"Отсортированный список результатов:");
+            Array.Sort(test);
+            for (int i = 0; i < test.Length; i++)
             {
-                sum += result;
+                Console.Write(test[i] + " ");
             }
-            double average = (double)sum / testresults.Length;
-            Console.WriteLine($"Средний балл: {average:F1}");
-            int max = testresults[0];
-            int min = testresults[0];
-
-            foreach (int result in testresults)
+            Console.WriteLine();
+            Console.WriteLine();
+            double med = 0;
+            if (test.Length % 2 == 0)
             {
-                if (result > max) max = result;
-                if (result < min) min = result;
-            }
-
-            Console.WriteLine($"Максимальный балл: {max}");
-            Console.WriteLine($"Минимальный балл: {min}");
-
-            int perfect = 0;    
-            int good = 0;         
-            int norm = 0; 
-            int fail = 0;         
-
-            foreach (int result in testresults)
-            {
-                if (result >= 85)
-                    perfect++;
-                else if (result >= 70)
-                    good++;
-                else if (result >= 50)
-                    norm++;
-                else
-                    fail++;
-            }
-
-            Console.WriteLine("Распределение по оценкам:");
-            Console.WriteLine($"Отлично (85-100): {perfect} студентов");
-            Console.WriteLine($"Хорошо (70-84): {good} студентов");
-            Console.WriteLine($"Удовлетворительно (50-69): {norm} студентов");
-            Console.WriteLine($"Неудовлетворительно (0-49): {fail} студентов");
-            int aboveAverage = 0;
-            foreach (int result in testresults)
-            {
-                if (result > average)
-                    aboveAverage++;
-            }
-
-            double percentAboveAverage = (double)aboveAverage / testresults.Length * 100;
-            Console.WriteLine($"Студентов выше среднего балла: {aboveAverage} ({percentAboveAverage:F1}%)");
-            int[] sortresults = new int[testresults.Length];
-            Array.Copy(testresults, sortresults, testresults.Length);
-
-            for (int i = 0; i < sortresults.Length - 1; i++)
-            {
-                for (int j = i + 1; j < sortresults.Length; j++)
-                {
-                    if (sortresults[i] > sortresults[j])
-                    {
-                        int temp = sortresults[i];
-                        sortresults[i] = sortresults[j];
-                        sortresults[j] = temp;
-                    }
-                }
-            }
-            double median;
-            if (sortresults.Length % 2 == 0)
-            {
-                median = (sortresults[sortresults.Length / 2 - 1] + sortresults[sortresults.Length / 2]) / 2.0;
+                med = (test[(test.Length / 2) - 1] + test[test.Length / 2]) / 2.0;
             }
             else
+                med = test[test.Length / 2];
+            Console.WriteLine($"Медиана: {med}");
+            Console.WriteLine();
+            double sum = 0.0;
+            for (int i = 0; i < test.Length; i++)
             {
-                median = sortresults[sortresults.Length / 2];
+                sum += test[i];
             }
-
-            Console.WriteLine($"Медиана: {median:F1}");
-            Console.WriteLine("Отсортированные результаты (по возрастанию):");
-            foreach (int result in sortresults)
+            double sred = sum / test.Length;
+            double summ = 0.0;
+            foreach (int i in test)
             {
-                Console.Write(result + " ");
+                double vch = i - sred;
+                double kv = Math.Pow(vch, 2);
+                summ += kv;
             }
-            Console.WriteLine(" ");
-            Console.WriteLine("Статистика по диапазонам баллов:");
-            int range90_100 = 0; 
-            int range80_89 = 0; 
-            int range70_79 = 0; 
-            int range60_69 = 0; 
-            int range0_59 = 0;  
-
-            foreach (int result in testresults)
+            double sred2 = summ / test.Length;
+            double kor = Math.Sqrt(sred2);
+            Console.WriteLine($"Среднее отклонение: {kor:F2}");
+            Console.WriteLine();
+            Console.WriteLine($"Топ-10% лучших результатов:");
+            var top10 = test.OrderByDescending(m => m).Take(Convert.ToInt32(Math.Ceiling(test.Length * 0.1)));
+            foreach (int i in top10)
             {
-                if (result >= 90) range90_100++;
-                else if (result >= 80) range80_89++;
-                else if (result >= 70) range70_79++;
-                else if (result >= 60) range60_69++;
-                else range0_59++;
+                Console.WriteLine($"--- {i} ---");
             }
-
-            Console.WriteLine($"90-100 баллов: {range90_100} студентов");
-            Console.WriteLine($"80-89 баллов: {range80_89} студентов");
-            Console.WriteLine($"70-79 баллов: {range70_79} студентов");
-            Console.WriteLine($"60-69 баллов: {range60_69} студентов");
-            Console.WriteLine($"0-59 баллов: {range0_59} студентов");
+            Console.WriteLine();
+            Console.WriteLine($"Сортировка результатов по группам(НеЗЧ, Неуд, Удовл, Хор, Отл)");
+            var lox = test.Where(m => m < 25);
+            Console.WriteLine($"Не зачет");
+            foreach (int i in lox)
+            {
+                Console.Write(i + " ");
+            }
+            Console.WriteLine();
+            var neyd = test.Where(m => m >= 25 && m < 50);
+            Console.WriteLine($"Неудовлетворительно");
+            foreach (int i in neyd)
+            {
+                Console.Write(i + " ");
+            }
+            Console.WriteLine();
+            var ydov = test.Where(m => m >= 50 && m < 70);
+            Console.WriteLine($"Удовлетворительно");
+            foreach (int i in ydov)
+            {
+                Console.Write(i + " ");
+            }
+            Console.WriteLine();
+            var good = test.Where(m => m >= 70 && m < 85);
+            Console.WriteLine($"Хорошо");
+            foreach (int i in good)
+            {
+                Console.Write(i + " ");
+            }
+            Console.WriteLine();
+            var imba = test.Where(m => m >= 85);
+            Console.WriteLine($"Отлично");
+            foreach (int i in good)
+            {
+                Console.Write(i + " ");
+            }
         }
     }
 }

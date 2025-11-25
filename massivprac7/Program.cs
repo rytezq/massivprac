@@ -58,7 +58,7 @@ namespace massivprac7
             {
                 string[] parts = product.Split(',');
                 string name = parts[0];
-                int price = int.Parse(parts[1]);
+                int price = Convert.ToInt32(parts[1]);
                 string productCategory = parts[2];
 
                 if (price >= minPrice && price <= maxPrice)
@@ -75,31 +75,14 @@ namespace massivprac7
             Console.WriteLine("Товары отсортированные по цене (от дешевых к дорогим):");
             Console.WriteLine("Название|Цена|Категория");
             Console.WriteLine();
-            string[] sortedProducts = new string[products.Length];
-            Array.Copy(products, sortedProducts, products.Length);
-            for (int i = 0; i < sortedProducts.Length - 1; i++)
-            {
-                for (int j = i + 1; j < sortedProducts.Length; j++)
-                {
-                    string[] parts1 = sortedProducts[i].Split(',');
-                    string[] parts2 = sortedProducts[j].Split(',');
+            var sortedProducts = products.OrderBy(p => Convert.ToInt32(p.Split(',')[1])).ToArray();
 
-                    int price1 = int.Parse(parts1[1]);
-                    int price2 = int.Parse(parts2[1]);
-
-                    if (price1 > price2)
-                    {
-                        string temp = sortedProducts[i];
-                        sortedProducts[i] = sortedProducts[j];
-                        sortedProducts[j] = temp;
-                    }
-                }
-            }
             foreach (string product in sortedProducts)
             {
                 string[] parts = product.Split(',');
                 Console.WriteLine($"{parts[0]}\t\t{parts[1]}\t{parts[2]}");
             }
+            
 
         }
     }

@@ -16,7 +16,7 @@ namespace massivprac6
             {
                 temperatures[i] = random.Next(-15, 36);
             }
-            Console.WriteLine("   Температуры за 30 дней:");
+            Console.WriteLine("---Температуры за 30 дней---");
             for (int i = 0; i < temperatures.Length; i++)
             {
                 Console.Write(temperatures[i] + " ");
@@ -27,7 +27,7 @@ namespace massivprac6
 
             }
             Console.WriteLine();
-            Console.WriteLine("Анализ по неделям");
+            Console.WriteLine("---Анализ по неделям---");
 
             int maxWeekSum = -1000; 
             int minWeekSum = 1000;  
@@ -45,7 +45,7 @@ namespace massivprac6
                     }
                 }
 
-                Console.WriteLine($"Неделя {week+1}: средняя температура = {weekSum / 7.0:F1}°C");
+                Console.WriteLine($"Неделя {week+1}: средняя температура = {weekSum / 7.0:F1}");
                 if (weekSum > maxWeekSum)
                 {
                     maxWeekSum = weekSum;
@@ -58,25 +58,25 @@ namespace massivprac6
                 }
             }
 
-            Console.WriteLine($"\nСамая теплая неделя: {maxWeekNumber} (средняя: {maxWeekSum / 7.0:F1}°C)");
-            Console.WriteLine($"Самая холодная неделя: {minWeekNumber} (средняя: {minWeekSum / 7.0:F1}°C)");
+            Console.WriteLine($"Самая теплая неделя: {maxWeekNumber} (средняя: {maxWeekSum / 7.0:F1})");
+            Console.WriteLine($"Самая холодная неделя: {minWeekNumber} (средняя: {minWeekSum / 7.0:F1})");
             int totalSum = 0;
             foreach (int temp in temperatures)
             {
                 totalSum += temp;
             }
-            double averageTemp = totalSum / 30.0;
+            double sredtemp = totalSum / 30.0;
 
-            Console.WriteLine($"Средняя температура за месяц: {averageTemp:F1}°C");
+            Console.WriteLine($"Средняя температура за месяц: {sredtemp:F1}");
             Console.WriteLine("Дни, когда температура была выше средней:");
             for (int i = 0; i < temperatures.Length; i++)
             {
-                if (temperatures[i] > averageTemp)
+                if (temperatures[i] > sredtemp)
                 {
-                    Console.WriteLine($"День {i + 1}: {temperatures[i]}°C");
+                    Console.WriteLine($"День {i + 1}: {temperatures[i]}");
                 }
             }
-            Console.WriteLine(" Группировка температур ");
+            Console.WriteLine("---- Группировка температур ----");
 
             int moroz = 0;    
             int holodno = 0;  

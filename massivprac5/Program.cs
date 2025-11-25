@@ -42,16 +42,10 @@ namespace massivprac5
           Console.WriteLine(workers[i]);
           }
           }           
-          Console.WriteLine("Отсортированный список:");              
-          string[] namesOnly = new string[workers.Length];
-          for (int i = 0; i < workers.Length; i++)
+          Console.WriteLine("Отсортированный список:");
+          foreach (string worker in workers.OrderBy(w => w.Split(',')[0]))
           {
-            namesOnly[i] = workers[i].Split(',')[0];
-          }                
-          Array.Sort(namesOnly);            
-          for (int i = 0; i < namesOnly.Length; i++)
-          {
-             Console.WriteLine(namesOnly[i]);
+              Console.WriteLine(worker.Split(',')[0]);
           }
         }
     }
